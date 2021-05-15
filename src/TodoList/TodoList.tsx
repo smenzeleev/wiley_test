@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import reducer, { INITIAL_STATE, ACTION_TYPES } from "./TodoListReducer";
 import type { Item } from "./TodoList.types";
 import * as s from "./TodoList.style";
@@ -8,9 +8,11 @@ import { sortTodoItemsInReverseOrder } from "./helpers";
 
 interface Props {
   initialItems?: Item[];
+  onChange?: (items: Item[]) => void;
 }
 
-function TodoList({ initialItems }: Props) {
+function TodoList({ initialItems, onChange }: Props) {
+  const isMounted = useRef(false);
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE, () => ({
     ...INITIAL_STATE,
     items: initialItems ? sortTodoItemsInReverseOrder(initialItems) : [],
@@ -32,6 +34,13 @@ function TodoList({ initialItems }: Props) {
       }
     }
   }
+
+  useEffect(() => {
+    if (onChange && isMounted.current) {
+      onChange(state.items);
+    }
+    isMounted.current = true;
+  }, [onChange, state.items]);
 
   const { items } = state;
 

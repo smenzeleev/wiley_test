@@ -1,4 +1,6 @@
 import React from "react";
+import type { Item } from "./TodoList";
+import StorageManager from "./StorageManager";
 import TodoList from "./TodoList/TodoList";
 import styled from "styled-components";
 
@@ -9,23 +11,21 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const testItems = [
-  {
-    id: "1",
-    title: "sampletext",
-    completed: false,
-  },
-  {
-    id: "2",
-    title: "sampletext",
-    completed: false,
-  },
-];
+// Better to export once for a whole app
+const storageManager = new StorageManager(global.localStorage, "TODO_APP");
+
+const TODOS_STORAGE_KEY = "todos";
 
 function App() {
+  const storagedItems = storageManager.getItem<Item[]>(TODOS_STORAGE_KEY) || [];
+
+  function handleTodoListChange(items: Item[]) {
+    storageManager.setItem(TODOS_STORAGE_KEY, items);
+  }
+
   return (
     <Wrapper>
-      <TodoList initialItems={testItems} />
+      <TodoList initialItems={storagedItems} onChange={handleTodoListChange} />
     </Wrapper>
   );
 }
