@@ -9,10 +9,23 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
+const testItems = [
+  {
+    id: "1",
+    title: "sampletext",
+    completed: false,
+  },
+  {
+    id: "2",
+    title: "sampletext",
+    completed: false,
+  },
+];
+
 function App() {
   return (
     <Wrapper>
-      <TodoList />
+      <TodoList initialItems={testItems} />
     </Wrapper>
   );
 }
