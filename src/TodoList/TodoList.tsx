@@ -4,6 +4,7 @@ import type { Item } from "./TodoList.types";
 import * as s from "./TodoList.style";
 import NewItemBlock from "./NewItemBlock";
 import TodoItem from "./TodoItem";
+import { sortTodoItemsInReverseOrder } from "./helpers";
 
 interface Props {
   initialItems?: Item[];
@@ -12,7 +13,7 @@ interface Props {
 function TodoList({ initialItems }: Props) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE, () => ({
     ...INITIAL_STATE,
-    items: initialItems || [],
+    items: initialItems ? sortTodoItemsInReverseOrder(initialItems) : [],
   }));
 
   function addItem(item: Item) {

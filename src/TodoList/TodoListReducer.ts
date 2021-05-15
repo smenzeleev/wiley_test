@@ -1,4 +1,5 @@
 import type { Item } from "./TodoList.types";
+import { sortTodoItemsInReverseOrder } from "./helpers";
 
 type State = {
   items: Item[];
@@ -24,7 +25,10 @@ type Action = AddItemAction | RemoveItemAction | UpdateItemAction;
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case ACTION_TYPES.addItem:
-      return { ...state, items: [...state.items, action.item] };
+      return {
+        ...state,
+        items: sortTodoItemsInReverseOrder([...state.items, action.item]),
+      };
     case ACTION_TYPES.removeItem:
       return {
         ...state,
