@@ -3,8 +3,9 @@ import reducer, { INITIAL_STATE, ACTION_TYPES } from "./TodoListReducer";
 import type { Item } from "./TodoList.types";
 import * as s from "./TodoList.style";
 import NewItemBlock from "./NewItemBlock";
-import TodoItem from "./TodoItem";
 import { sortTodoItemsInReverseOrder } from "./helpers";
+import { FlexBox } from "../common";
+import { TodoItem } from "./TodoItem";
 
 interface Props {
   initialItems?: Item[];
@@ -45,14 +46,21 @@ function TodoList({ initialItems, onChange }: Props) {
   const { items } = state;
 
   return (
-    <s.Wrapper>
+    <FlexBox direction="column" width="auto">
+      <FlexBox>
+        <h3>Todo list:</h3>
+      </FlexBox>
+
       <NewItemBlock onAdd={addItem} />
-      <s.List>
-        {items.map((item) => (
-          <TodoItem key={item.id} {...item} onChange={hanleChangeTodoItem} />
-        ))}
-      </s.List>
-    </s.Wrapper>
+
+      <FlexBox>
+        <s.List>
+          {items.map((item) => (
+            <TodoItem key={item.id} {...item} onChange={hanleChangeTodoItem} />
+          ))}
+        </s.List>
+      </FlexBox>
+    </FlexBox>
   );
 }
 

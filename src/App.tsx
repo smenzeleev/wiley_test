@@ -1,15 +1,8 @@
 import React from "react";
 import type { Item } from "./TodoList";
 import StorageManager from "./StorageManager";
-import TodoList from "./TodoList/TodoList";
-import styled from "styled-components";
-
-const Wrapper = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-`;
+import { TodoList } from "./TodoList";
+import { FlexBox } from "./common";
 
 // Better to export once for a whole app
 const storageManager = new StorageManager(global.localStorage, "TODO_APP");
@@ -24,9 +17,9 @@ function App() {
   }
 
   return (
-    <Wrapper>
+    <FlexBox justifyContent="center">
       <TodoList initialItems={storagedItems} onChange={handleTodoListChange} />
-    </Wrapper>
+    </FlexBox>
   );
 }
 

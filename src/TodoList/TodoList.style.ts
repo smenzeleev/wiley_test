@@ -4,4 +4,5 @@ export const Wrapper = styled.div``;
 
 export const List = styled.ul`
   list-style: none;
+  width: 100%;
 `;

@@ -28,7 +28,7 @@ export function NewItemBlock({ onAdd }: Props) {
   }
 
   return (
-    <FlexBox>
+    <FlexBox margin="10px 0 10px 0">
       <input type="text" value={title} onChange={handleChange} />
       <button onClick={handleAddClick} disabled={!Boolean(title)}>
         Add

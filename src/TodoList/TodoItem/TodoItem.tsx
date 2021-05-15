@@ -1,50 +1,20 @@
 import React, { useReducer } from "react";
 import styled from "styled-components";
 import { ifProp } from "styled-tools";
-import { FlexBox } from "../common";
-import type { Item } from "./TodoList.types";
+import { FlexBox } from "../../common";
+import type { Item } from "../TodoList.types";
+import TodoItemReducer, { INITIAL_STATE } from "./TodoItemReducer";
 
 const Title = styled.span<{ completed: Boolean }>`
   text-decoration: ${ifProp("completed", "line-through", "none")};
-`;
-
-const Wrapper = styled(FlexBox)`
-  user-select: none;
 `;
 
 interface Props extends Item {
   onChange: (item: Item, action: "change" | "remove") => void;
 }
 
-type State = {
-  editMode: boolean;
-  newTitle: string;
-};
-
-type Action = {
-  type: "setState";
-  payload: {
-    editMode?: boolean;
-    newTitle?: string;
-  };
-};
-
-function reducer(state: State, action: Action) {
-  switch (action.type) {
-    case "setState":
-      return { ...state, ...action.payload };
-    default:
-      return state;
-  }
-}
-
-const INITIAL_STATE = {
-  editMode: false,
-  newTitle: "",
-};
-
 function TodoItem({ onChange, ...itemData }: Props) {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE, () => ({
+  const [state, dispatch] = useReducer(TodoItemReducer, INITIAL_STATE, () => ({
     ...INITIAL_STATE,
     newTitle: itemData.title,
   }));
@@ -93,35 +63,44 @@ function TodoItem({ onChange, ...itemData }: Props) {
   }
 
   return (
-    <Wrapper as="li">
+    <FlexBox as="li" margin="0 0 10px 0">
       {!state.editMode ? (
-        <>
-          <Title completed={completed} onClick={handleTitleClick}>
-            {title}
-          </Title>
-          <button title="Remove Task" onClick={handleRemoveClick}>
-            Remove
-          </button>
-          <button title="Edit Task Title" onClick={handleEditClick}>
-            Edit
-          </button>
-        </>
+        <FlexBox direction="column">
+          <FlexBox>
+            <Title completed={completed} onClick={handleTitleClick}>
+              {title}
+            </Title>
+          </FlexBox>
+          <FlexBox justifyContent="space-between">
+            <button title="Remove Task" onClick={handleRemoveClick}>
+              Remove
+            </button>
+            <button title="Edit Task Title" onClick={handleEditClick}>
+              Edit
+            </button>
+          </FlexBox>
+        </FlexBox>
       ) : (
-        <>
-          <input
-            title="New title"
-            value={state.newTitle}
-            onChange={handleNewTitleChange}
-          />
-          <button title="Apply changes" onClick={handleApplyChangesClick}>
-            Apply
-          </button>
-          <button title="Decline changes" onClick={handleCancelClick}>
-            Cancel
-          </button>
-        </>
+        <FlexBox direction="column">
+          <FlexBox>
+            <input
+              title="New title"
+              value={state.newTitle}
+              onChange={handleNewTitleChange}
+              style={{ width: "100%" }}
+            />
+          </FlexBox>
+          <FlexBox justifyContent="space-between">
+            <button title="Apply changes" onClick={handleApplyChangesClick}>
+              Apply
+            </button>
+            <button title="Decline changes" onClick={handleCancelClick}>
+              Cancel
+            </button>
+          </FlexBox>
+        </FlexBox>
       )}
-    </Wrapper>
+    </FlexBox>
   );
 }
 
